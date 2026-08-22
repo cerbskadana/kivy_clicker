@@ -20,7 +20,7 @@ class Fish(Image):
         return super().on_kv_post(base_widget)
 
     def new_fish(self, *args):
-        self.source = "kivy\assets\images\fish.png"
+        self.source = "assets/images/fish.png"
         self.hp_current = 10
         self.show_fish()
 
