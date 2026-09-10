@@ -18,12 +18,12 @@ class Fish(Image):
     timer_hide = None
     timer_show = None
 
-    def on_kv_post(self, base_widget):
+    def on_kv_post(self, base_widget):  
         self.GAME_SCREEN = self.parent.parent
         return super().on_kv_post(base_widget)
 
     def new_fish(self, *args):
-        self.source = 'assets/images/fish.png'
+        self.source = 'assets/images/fish.jpg'
         self.hp_current = 10
         self.show_fish()
 
@@ -128,15 +128,22 @@ class SettingsScreen(Screen):
 class ClickerApp(App):
     theme = StringProperty("light")
         # ДОДАНО: звуки завантажуються один раз після запуску застосунку.
+    current_track = "assets/sounds/music1.mp3"
+
+
     def on_start(self):
-        self.button_sound = SoundLoader.load("assets/sounds/vgmenuhighlight.ogg")
-        self.fish_sound = SoundLoader.load("assets/sounds/pop1.ogg")
+        self.button_sound = SoundLoader.load("assets/sounds/pop1.mp3")
+        self.fish_sound = SoundLoader.load("assets/sounds/pop1.mp3")
         self.music_sound = None
-        self.play_music("assets/sounds/Whimsy Walking.wav")  # ДОДАНО: запускаємо перший трек зі списку нижче.
+        self.play_music(self.current_track)  # ДОДАНО: запускаємо перший трек зі списку нижче.
 
     # ДОДАНО: змінює кольорову тему без перезапуску застосунку.
-    def set_theme(self, theme):
-        self.theme = theme
+    
+    def next_theme(self):
+        if self.theme == "light":
+            self.theme = "dark"
+        else:
+            self.theme = "light"
 
     # ДОДАНО: відтворює короткий звук натискання кнопки.
     def play_button_sound(self):
@@ -149,17 +156,31 @@ class ClickerApp(App):
         if self.fish_sound:
             self.fish_sound.stop()
             self.fish_sound.play()
+        
+
+    def next_music(self):
+        if self.current_track == "assets/sounds/music1.mp3":
+            self.current_track = "assets/sounds/music2.mp3"
+        else:
+            self.current_track = "assets/sounds/music1.mp3"
+
+        self.play_music(self.current_track)
+    
+    
 
     # ДОДАНО: зупиняє попередній трек та запускає вибраний фоновий трек.
     def play_music(self, track_name):
         if self.music_sound:
             self.music_sound.stop()
+            try:
+                self.music_sound.unload()
+            except Exception:
+                pass
 
-        # ДОДАНО: точні назви двох фонових треків у папці assets/sounds.
-        self.music_sound = SoundLoader.load("assets/sounds/Whimsy Walking.wav")
+        self.music_sound = SoundLoader.load(track_name)
         if self.music_sound:
             self.music_sound.loop = True
-            self.music_sound.volume = 0.4
+            self.music_sound.volume = 0.1
             self.music_sound.play()
     def build(self):
         sm = ScreenManager()

@@ -117,19 +117,12 @@
             font_size: "40sp"
 
         ButtonMenu:
-            text: "light Theme"
-            on_press: app.set_theme("light")
+            text: "Theme"
+            on_press: app.next_theme()
 
         ButtonMenu:
-            text: "dark Theme"
-            on_press: app.set_theme("dark")
-
-        ButtonMenu:
-            text: "music 1"
-            on_press: app.play_music("assets/sounds/music1.mp3")
-        ButtonMenu:
-            text: "music 2"
-            on_press: app.play_music("assets/sounds/music2.mp3")
+            text: "Switch Music"
+            on_press: app.next_music()
         ButtonMenu:
             text: "Back to Menu"
             on_press: root.go_menu()
